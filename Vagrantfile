@@ -1,5 +1,5 @@
 IMAGE_NAME = "bento/ubuntu-20.04"
-K8S_NAME = "ditwl-k8s-01"
+K8S_NAME = "cluster-k8s-01"
 MASTERS_NUM = 1
 MASTERS_CPU = 2 
 MASTERS_MEM = 2048
@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     config.ssh.insert_key = false
 
     (1..MASTERS_NUM).each do |i|      
-        config.vm.define "k8s-m-#{i}" do |master|
+        config.vm.define "k8s-master-#{i}" do |master|
             master.vm.box = IMAGE_NAME
             master.vm.network "private_network", ip: "#{IP_BASE}#{i + 10}"
             master.vm.hostname = "k8s-master-#{i}"
@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
     end
 
     (1..NODES_NUM).each do |j|
-        config.vm.define "k8s-worker-#{j}" do |node|
+        config.vm.define "k8s-node-#{j}" do |node|
             node.vm.box = IMAGE_NAME
             node.vm.network "private_network", ip: "#{IP_BASE}#{j + 10 + MASTERS_NUM}"
             node.vm.hostname = "k8s-node-#{j}"
